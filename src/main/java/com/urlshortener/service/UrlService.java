@@ -4,7 +4,6 @@ import com.urlshortener.model.UrlDetail;
 import com.urlshortener.repository.UrlDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -52,5 +51,16 @@ public class UrlService {
         return baseUrl + "/" + shortCode;
 
 
+    }
+
+    public String redirectToLongUrl(String shortCode){
+        UrlDetail urlDetail = urlDetailRepository.findByShortCode(shortCode).orElseThrow();
+        if(LocalDateTime.now().isAfter(urlDetail.getExpiresAt()))
+        {
+            throw new RuntimeException("The Url is expired");
+        }
+        urlDetail.setClickCount(urlDetail.getClickCount()+1);
+        urlDetailRepository.save(urlDetail);
+        return urlDetail.getLongUrl();
     }
 }
