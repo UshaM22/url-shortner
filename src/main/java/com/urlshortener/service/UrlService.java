@@ -4,7 +4,7 @@ import com.urlshortener.model.UrlDetail;
 import com.urlshortener.repository.UrlDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
