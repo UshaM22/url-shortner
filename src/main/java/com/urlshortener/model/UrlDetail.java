@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "urlDetails")
+@Table(name = "url_details")
 @Data
 public class UrlDetail {
 
