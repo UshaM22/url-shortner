@@ -38,15 +38,16 @@ public class UserService {
 
     }
 
-    public void loginUser(LoginRegistrationRequest request){
+    public String loginUser(LoginRegistrationRequest request){
         String userName = request.getUserName();
         String password = request.getPassword();
 
         User user = userDetailRepository.findByUserName(userName).orElseThrow();
-
-
-       {
-
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            return "Entered wrong password";
         }
+
+        return "Login Successful";
+
     }
 }
