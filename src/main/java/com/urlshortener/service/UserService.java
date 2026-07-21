@@ -1,5 +1,6 @@
 package com.urlshortener.service;
 
+import com.urlshortener.JwtUtil;
 import com.urlshortener.dto.LoginRegistrationRequest;
 import com.urlshortener.model.User;
 import com.urlshortener.repository.UserDetailRepository;
@@ -12,6 +13,9 @@ public class UserService {
 
     @Autowired
     private UserDetailRepository userDetailRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -47,7 +51,8 @@ public class UserService {
             return "Entered wrong password";
         }
 
-        return "Login Successful";
+        return jwtUtil.generateToken(userName);
+
 
     }
 }
