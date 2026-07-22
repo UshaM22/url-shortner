@@ -31,5 +31,9 @@ public class UrlDetail {
     @Column
     private int clickCount;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
 }

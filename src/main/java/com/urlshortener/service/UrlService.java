@@ -1,9 +1,12 @@
 package com.urlshortener.service;
 
 import com.urlshortener.model.UrlDetail;
+import com.urlshortener.model.User;
 import com.urlshortener.repository.UrlDetailRepository;
+import com.urlshortener.repository.UserDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +23,8 @@ public class UrlService {
 
     @Value("${app.default-expiry-days}")
     private int expiryDays;
+    @Autowired
+    private UserDetailRepository userDetailRepository;
 
     public String createShortCode(String longUrl) {
         int leftLimit = 48; // numeral 0
@@ -46,6 +51,9 @@ public class UrlService {
         urlDetail.setCreatedAt(createdAt);
         urlDetail.setExpiresAt(createdAt.plusDays(expiryDays));
         urlDetail.setLongUrl(longUrl);
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDetailRepository.findByUserName(currentUsername).orElseThrow();
+        urlDetail.setUser(user);
         UrlDetail saved = urlDetailRepository.save(urlDetail);
 
         return baseUrl + "/" + shortCode;
